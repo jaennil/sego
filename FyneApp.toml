@@ -3,17 +3,17 @@
   Name = "Money Manager Ex"
   ID = "ru.dubrovskih.mmex"
   Version = "0.0.1"
-  Build = 1
-
-[Source]
-  Repo = "https://github.com/jaennil/sego"
-  Dir = "."
+  Build = 78
 
 [Development]
   HelperText = "This binary was built with debug symbols"
 
 [Release]
   HelperText = "This binary was built without debug symbols"
+
+[Source]
+  Repo = "https://github.com/jaennil/sego"
+  Dir = "."
 
 [LinuxAndBSD]
   GenericName = "Money Manager Ex"
