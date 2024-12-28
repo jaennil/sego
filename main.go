@@ -7,6 +7,7 @@ import (
     "fyne.io/fyne/v2/container"
     "sego/data"
     "sego/menu"
+    "sego/repository"
 )
 
 func main() {
@@ -25,6 +26,8 @@ func main() {
     }
 
     topMenu := menu.Top(mainWindow)
+
+    repository.PgConnect()
 
     split := container.NewHSplit(menu.Left(setTutorial, true), content)
     split.Offset = 0.2
