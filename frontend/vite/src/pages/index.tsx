@@ -44,7 +44,7 @@ export default function DashboardPage() {
             //     colors: ['red', 'green']
             //   },
             // }]}
-            yAxis={[{label: "Income vs Expenses"}]}
+            // yAxis={[{label: "Income vs Expenses"}]}
             series={s}
             barlabels="value"
             axisHighlight={{

@@ -8,7 +8,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Divider,
+  Divider, FormHelperText, InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -121,6 +121,7 @@ export function NewTransactionDialog({ open, handleClose }: { open: boolean; han
       <DialogContent>
         <Stack spacing={2}>
           <Select
+              labelId="new-transaction-dialog-type-label"
             required
             autoFocus
             fullWidth
