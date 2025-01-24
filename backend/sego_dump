@@ -1,0 +1,259 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 17.2
+-- Dumped by pg_dump version 17.2
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: account; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.account (
+    name character varying(255) NOT NULL,
+    type character varying(255) NOT NULL,
+    balance double precision NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    currency_code character(3) NOT NULL,
+    CONSTRAINT account_type_check CHECK ((length((type)::text) > 0))
+);
+
+
+ALTER TABLE public.account OWNER TO postgres;
+
+--
+-- Name: category; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.category (
+    title character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.category OWNER TO postgres;
+
+--
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.schema_migrations (
+    version bigint NOT NULL,
+    dirty boolean NOT NULL
+);
+
+
+ALTER TABLE public.schema_migrations OWNER TO postgres;
+
+--
+-- Name: transaction; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.transaction (
+    transaction_id integer NOT NULL,
+    amount double precision NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    type character varying(255) NOT NULL,
+    account character varying(255) NOT NULL,
+    category character varying(255) NOT NULL,
+    CONSTRAINT transaction_type_check CHECK ((length((type)::text) > 0))
+);
+
+
+ALTER TABLE public.transaction OWNER TO postgres;
+
+--
+-- Name: transaction_transaction_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.transaction_transaction_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.transaction_transaction_id_seq OWNER TO postgres;
+
+--
+-- Name: transaction_transaction_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.transaction_transaction_id_seq OWNED BY public.transaction.transaction_id;
+
+
+--
+-- Name: transaction transaction_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.transaction ALTER COLUMN transaction_id SET DEFAULT nextval('public.transaction_transaction_id_seq'::regclass);
+
+
+--
+-- Data for Name: account; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.account (name, type, balance, created_at, currency_code) FROM stdin;
+Sberbank	Credit Card	10040.89	2025-07-31 21:00:00	RUB
+Кошелек	Cash	11965	2026-10-31 21:00:00	RUB
+\.
+
+
+--
+-- Data for Name: category; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.category (title) FROM stdin;
+Bills
+Telephone
+Electricity
+Gas
+Internet
+Rent
+Cable TV
+Water
+Food
+Groceries
+Dining out
+Leisure
+Movies
+Video Rental
+Magazines
+Automobile
+Maintenance
+Parking
+Registration
+Education
+Books
+Tuition
+Homeneeds
+Clothing
+Furnishing
+Others
+Healthcare
+Dental
+Eyecare
+Physician
+Prescriptions
+Insurance
+Auto
+Life
+Home
+Health
+Vacation
+Travel
+Lodging
+Sightseeing
+Taxes
+Income Tax
+House Tax
+Water Tax
+Miscellaneous
+Gifts
+Income
+Salary
+Reimbursement/Refunds
+Investment Income
+Other Income
+Other Expenses
+Transfer
+\.
+
+
+--
+-- Data for Name: schema_migrations; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.schema_migrations (version, dirty) FROM stdin;
+1	f
+\.
+
+
+--
+-- Data for Name: transaction; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.transaction (transaction_id, amount, created_at, type, account, category) FROM stdin;
+3	10	2024-12-31 21:00:00	Withdrawal	Sberbank	Food
+4	50	2025-08-31 21:00:00	Deposit	Sberbank	Registration
+5	10000	2026-12-01 03:25:00	Deposit	Кошелек	Gifts
+6	3050	2025-01-31 21:00:00	Withdrawal	Кошелек	Clothing
+\.
+
+
+--
+-- Name: transaction_transaction_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.transaction_transaction_id_seq', 6, true);
+
+
+--
+-- Name: account account_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.account
+    ADD CONSTRAINT account_pkey PRIMARY KEY (name);
+
+
+--
+-- Name: category category_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.category
+    ADD CONSTRAINT category_pkey PRIMARY KEY (title);
+
+
+--
+-- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.schema_migrations
+    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: transaction transaction_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.transaction
+    ADD CONSTRAINT transaction_pkey PRIMARY KEY (transaction_id);
+
+
+--
+-- Name: transaction transaction_account_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.transaction
+    ADD CONSTRAINT transaction_account_fkey FOREIGN KEY (account) REFERENCES public.account(name);
+
+
+--
+-- Name: transaction transaction_category_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.transaction
+    ADD CONSTRAINT transaction_category_fkey FOREIGN KEY (category) REFERENCES public.category(title);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
